@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <title> FWF </title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+   $(document).ready(function() {
+
+       $('#loadingDiv').hide();
+       $('#gameOn').hide();
+
+       console.log("Ready.");
+
+       var socket = io.connect('http://localhost:8081');
+
+       $('#submitButton').on('click', function(e) {
+           e.preventDefault();
+           $('#formDiv').hide();
+           socket.emit('nick', $('#nameField').val()
+           );
+       });
+
+       socket.on('callback', function(data) {
+           if(data.done === "First User") {
+               $('#loadingDiv').show();
+           } else {
+               $('#loadingDiv').hide();
+               $('#gameOn').show();
+           }
+       });
+
+   });
+
+
+</script>
+<body>
+    <form>
+        <div id = "formDiv">
+            <input id = "nameField" type="text" placeholder="Name">
+            <input id = "submitButton" type="submit"></input>
+        </div>
+        <div id = "loadingDiv">
+            <h4>Waiting...</h4>
+        </div>
+        <div id = "gameOn">
+            <h4>Game started.</h4>
+        </div>
+    </form>
+</body>
+</html>
