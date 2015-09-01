@@ -8,6 +8,7 @@ app.use(express.static(__dirname + '/public'));
 var nicks = [];
 var numClients = 0;
 var sockets = [];
+var letter = [];
 
 app.get('/', function (req,res) {
     res.send('./public/index.html');
@@ -19,18 +20,19 @@ console.log("Listening at 8081");
 io.on('connection', function(socket){
   console.log('A user has connected.');
   socket.on('nick', function(data) {
-
+        var current=++numClients;
         nicks.push(data);
         sockets.push(socket);
-        numClients++;
-
-        if(numClients % 2 != 0) {
+        if(current % 2 != 0) {
             socket.emit('callback', {done: "First User", data: data});
-        } else {
-            sockets[numClients - 2].emit('callback', {done: "Second User", data: data});
-            socket.emit('callback', {done: "Second User", data: data});
         }
-
-
+        else {
+            sockets[current - 2].emit('callback', {done: "Second User", data: data});
+            socket.emit('callback', {done: "Second User", data: data});
+            letter[current-2]=String.fromCharCode(65+(Math.floor((Math.random() * 26))));
+            letter[current-1]=letter[current-2];
+            sockets[current - 2].emit('letter', {alpha: letter[current-2]});
+            sockets[current - 1].emit('letter', {alpha: letter[current-2]});
+        }
    });
 });

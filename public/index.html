@@ -10,6 +10,7 @@
 
        $('#loadingDiv').hide();
        $('#gameOn').hide();
+       $('#gamePlay').hide();
 
        console.log("Ready.");
 
@@ -30,6 +31,11 @@
                $('#gameOn').show();
            }
        });
+       socket.on('letter', function(data) {
+                $('#gameOn').hide();
+                $('#gamePlay').show();
+                $("#gamePlay").append("<h4>"+data.alpha+"</h4>");
+       });
 
    });
 
@@ -45,7 +51,9 @@
             <h4>Waiting...</h4>
         </div>
         <div id = "gameOn">
-            <h4>Game started.</h4>
+            <h4>Assigning letter...</h4>
+        </div>
+        <div id="gamePlay">
         </div>
     </form>
 </body>
