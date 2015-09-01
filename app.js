@@ -45,9 +45,9 @@ io.on('connection', function(socket){
 
    socket.on('answers', function(data){
        var i=sockets.indexOf(socket);
-       var score=computeScore();
+       var score=computeScore(data.answers);
        socket.emit("score",score : score);
-       if(data.firstUser==1)
+       if(data.first==1)
        {
            sockets[i+1].emit("otherScore",score : score);
        }
