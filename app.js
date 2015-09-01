@@ -38,22 +38,47 @@ io.on('connection', function(socket){
             {
                 sockets[current - 2].emit('demandanswers', {timeover: "yes"});
                 sockets[current - 1].emit('demandanswers', {timeover: "yes"});
-            }, 61000);
-
+            }, 10000);
         }
+   });
+   socket.on('disconnect', function()
+   {
+        var i=sockets.indexOf(socket);
+        if(i==-1)
+        {
+            return;
+        }
+        if(i%2==0 && sockets[i+1]!==undefined)
+        {
+            sockets[i+1].emit("disconnecteduser", nicks[i]);
+            console.log("user 1 disconnected");
+        }
+        else {
+            if(i%2==1)
+            {
+                sockets[i-1].emit("disconnecteduser", nicks[i]);
+                console.log("user 2 disconnected");
+            }
+            else {
+                nicks.pop();
+                sockets.pop();
+                numClients--;
+            }
+        }
+
    });
 
    socket.on('answers', function(data){
        var i=sockets.indexOf(socket);
-       var score=computeScore(data.answers);
-       socket.emit("score",score : score);
+       var score=0;
+       socket.emit("score",{score : score});
        if(data.first==1)
        {
-           sockets[i+1].emit("otherScore",score : score);
+           sockets[i+1].emit("otherScore",{score : score});
        }
        else
        {
-           sockets[i-1].emit("otherScore",score: score);
+           sockets[i-1].emit("otherScore",{score: score});
        }
    });
 });

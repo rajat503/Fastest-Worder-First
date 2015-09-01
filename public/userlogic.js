@@ -5,6 +5,7 @@ $(document).ready(function() {
     $('#gamePlay').hide();
     $('#result').hide();
     $('#scores').hide();
+    $('#discon').hide();
     var firstUser=0;
     var score=0;
     var otherScore=0;
@@ -53,7 +54,11 @@ $(document).ready(function() {
         $("#scores").append("<h4 id='oppScore'>"+otherScore+"</h4>");
         checkVictory();
     });
-
+    socket.on('disconnecteduser', function(data){
+        $('#discon').show();
+        $('#gamePlay').hide();
+        socket.close();
+    });
     function checkVictory()
     {
         if(otherScoreset==1 && scoreset==1)
