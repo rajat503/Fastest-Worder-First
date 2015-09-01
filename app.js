@@ -19,6 +19,7 @@ console.log("Listening at 8081");
 
 io.on('connection', function(socket){
   console.log('A user has connected.');
+
   socket.on('nick', function(data) {
         var current=++numClients;
         nicks.push(data);
@@ -33,6 +34,26 @@ io.on('connection', function(socket){
             letter[current-1]=letter[current-2];
             sockets[current - 2].emit('letter', {alpha: letter[current-2]});
             sockets[current - 1].emit('letter', {alpha: letter[current-2]});
+            setTimeout(function()
+            {
+                sockets[current - 2].emit('demandanswers', {timeover: "yes"});
+                sockets[current - 1].emit('demandanswers', {timeover: "yes"});
+            }, 61000);
+
         }
+   });
+
+   socket.on('answers', function(data){
+       var i=sockets.indexOf(socket);
+       var score=computeScore();
+       socket.emit("score",score : score);
+       if(data.firstUser==1)
+       {
+           sockets[i+1].emit("otherScore",score : score);
+       }
+       else
+       {
+           sockets[i-1].emit("otherScore",score: score);
+       }
    });
 });

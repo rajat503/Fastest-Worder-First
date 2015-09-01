@@ -5,42 +5,7 @@
     <title> FWF </title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-   $(document).ready(function() {
-
-       $('#loadingDiv').hide();
-       $('#gameOn').hide();
-       $('#gamePlay').hide();
-
-       console.log("Ready.");
-
-       var socket = io.connect('http://localhost:8081');
-
-       $('#submitButton').on('click', function(e) {
-           e.preventDefault();
-           $('#formDiv').hide();
-           socket.emit('nick', $('#nameField').val()
-           );
-       });
-
-       socket.on('callback', function(data) {
-           if(data.done === "First User") {
-               $('#loadingDiv').show();
-           } else {
-               $('#loadingDiv').hide();
-               $('#gameOn').show();
-           }
-       });
-       socket.on('letter', function(data) {
-                $('#gameOn').hide();
-                $('#gamePlay').show();
-                $("#gamePlay").append("<h4>"+data.alpha+"</h4>");
-       });
-
-   });
-
-
-</script>
+<script src="userlogic.js"> </script>
 <body>
     <form>
         <div id = "formDiv">
@@ -54,6 +19,10 @@
             <h4>Assigning letter...</h4>
         </div>
         <div id="gamePlay">
+        </div>
+        <div id="scores">
+        </div>
+        <div id="result">
         </div>
     </form>
 </body>
