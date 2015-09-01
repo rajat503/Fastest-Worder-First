@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var fs = require('fs');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -9,6 +10,8 @@ var nicks = [];
 var numClients = 0;
 var sockets = [];
 var letter = [];
+var dictionary = fs.readFileSync('dictionary.txt').toString().toUpperCase().split("\n");
+dictionary.pop();
 
 app.get('/', function (req,res) {
     res.send('./public/index.html');
@@ -38,7 +41,7 @@ io.on('connection', function(socket){
             {
                 sockets[current - 2].emit('demandanswers', {timeover: "yes"});
                 sockets[current - 1].emit('demandanswers', {timeover: "yes"});
-            }, 10000);
+            }, 60000);
         }
    });
 
@@ -70,15 +73,56 @@ io.on('connection', function(socket){
    socket.on('answers', function(data){
        var i=sockets.indexOf(socket);
        var score=0;
-       console.log(data.answers);
-       socket.emit("score",{score : score});
-       if(data.first==1)
+       var answers=data.answers.toString().toUpperCase().split("\n");
+       for( j in answers)
        {
-           sockets[i+1].emit("otherScore",{score : score});
-       }
-       else
-       {
-           sockets[i-1].emit("otherScore",{score: score});
-       }
+           var present=0;
+           if(answers[j].substring(0,1)===letter[i])
+           {
+               var flag=0;
+               for(k=0;k<j;k++)
+               {
+                   if(answers[j]===answers[k])
+                   {
+                       flag=1;
+                       break;
+                   }
+               }
+               if(flag===0)
+               {
+                  var mid=Math.floor(dictionary.length/2);
+                  var l=0,u=dictionary.length;
+                  do {
+                      if(dictionary[mid]===answers[j])
+                      {
+                          present=1;
+                          break;
+                      }
+                      if(dictionary[mid]>answers[j])
+                      {
+                          u=mid-1;
+                      }
+                      else {
+                          l=mid+1;
+                      }
+                      mid=Math.floor((l+u)/2);
+                  }
+                  while (l<=u);
+               }
+           }
+           if(present===1)
+           {
+               score++;
+           }
+     }
+     socket.emit("score",{score: score});
+     if(data.first==1)
+     {
+         sockets[i+1].emit("otherScore",{score: score});
+     }
+     else
+     {
+         sockets[i-1].emit("otherScore",{score: score});
+     }
    });
 });

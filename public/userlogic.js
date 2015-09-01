@@ -14,7 +14,7 @@ $(document).ready(function() {
 
     console.log("Ready.");
 
-    var socket = io.connect('http://localhost:8081');
+    var socket = io.connect('http://10.3.14.107:8081');
 
     $('#submitButton').on('click', function(e) {
         e.preventDefault();
@@ -49,7 +49,7 @@ $(document).ready(function() {
         checkVictory();
     });
     socket.on('otherScore', function(data){
-        score=data.score;
+        otherScore=data.score;
         otherScoreset=1;
         $("#scores").append("<h4 id='oppScore'>"+otherScore+"</h4>");
         checkVictory();
