@@ -37,6 +37,10 @@ $(document).ready(function() {
              $('#gamePlay').show();
              $("#gamePlay").append("<h4>"+data.alpha+"</h4>");
     });
+    socket.on('opponent', function(data) {
+             $("#gamePlay").append("<h4> Opponent: "+data.nick+"</h4>");
+    });
+
     socket.on('demandanswers', function(data){
         socket.emit('answers', {answers: $('#answerField').val(), first: firstUser});
         $('#gamePlay').hide();

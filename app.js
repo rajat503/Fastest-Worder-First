@@ -24,6 +24,7 @@ io.on('connection', function(socket){
   console.log('A user has connected.');
 
   socket.on('nick', function(data) {
+        console.log(data+" is queued/paired");
         var current=++numClients;
         nicks.push(data);
         sockets.push(socket);
@@ -37,6 +38,8 @@ io.on('connection', function(socket){
             letter[current-1]=letter[current-2];
             sockets[current - 2].emit('letter', {alpha: letter[current-2]});
             sockets[current - 1].emit('letter', {alpha: letter[current-2]});
+            sockets[current - 2].emit('opponent', {nick: nicks[current-1]});
+            sockets[current - 1].emit('opponent', {nick: nicks[current-2]});
             setTimeout(function()
             {
                 sockets[current - 2].emit('demandanswers', {timeover: "yes"});
