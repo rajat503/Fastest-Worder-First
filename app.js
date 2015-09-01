@@ -41,6 +41,7 @@ io.on('connection', function(socket){
             }, 10000);
         }
    });
+
    socket.on('disconnect', function()
    {
         var i=sockets.indexOf(socket);
@@ -51,13 +52,11 @@ io.on('connection', function(socket){
         if(i%2==0 && sockets[i+1]!==undefined)
         {
             sockets[i+1].emit("disconnecteduser", nicks[i]);
-            console.log("user 1 disconnected");
         }
         else {
             if(i%2==1)
             {
                 sockets[i-1].emit("disconnecteduser", nicks[i]);
-                console.log("user 2 disconnected");
             }
             else {
                 nicks.pop();
@@ -71,6 +70,7 @@ io.on('connection', function(socket){
    socket.on('answers', function(data){
        var i=sockets.indexOf(socket);
        var score=0;
+       console.log(data.answers);
        socket.emit("score",{score : score});
        if(data.first==1)
        {

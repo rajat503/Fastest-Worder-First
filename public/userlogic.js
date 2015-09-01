@@ -19,8 +19,8 @@ $(document).ready(function() {
     $('#submitButton').on('click', function(e) {
         e.preventDefault();
         $('#formDiv').hide();
-        socket.emit('nick', $('#nameField').val()
-        );
+        socket.emit('nick', $('#nameField').val());
+        $('#formDiv').remove();
     });
 
     socket.on('callback', function(data) {
