@@ -12,4 +12,8 @@ $(document).ready(function() {
         message = "Up so late? Cool."
     }
     $('#welcomeTag').text(message);
+    var myInput = document.getElementById('answerField');
+    myInput.onpaste = function(e) {
+        e.preventDefault();
+    }
 });
