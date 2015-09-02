@@ -3,6 +3,7 @@ $(document).ready(function() {
     $('#loadingDiv').hide();
     $('#gameOn').hide();
     $('#gamePlay').hide();
+    $('#progressBar').hide();
     $('#result').hide();
     $('#scores').hide();
     $('#discon').hide();
@@ -24,6 +25,8 @@ $(document).ready(function() {
             $('#formDiv').remove();
             $('#index-banner').remove();
             $('.not-there-at-first').css('opacity', '1.0');
+        } else {
+            Materialize.toast("Name is required", 1500 )
         }
     });
 
@@ -39,8 +42,34 @@ $(document).ready(function() {
     socket.on('letter', function(data) {
              $('#gameOn').hide();
              $('#gamePlay').show();
+             $('#progressBar').show();
              $("#letterAssigned").text(data.alpha);
+            //  var count=180;
+            //  var counter=setInterval(timer, 333.33);
+            //  function timer() {
+            //    count=count-1;
+            //    if (count <= 0) {
+            //       clearInterval(counter);
+            //       return;
+            //    }
+            //    $('.determinate').css('width', (count*5/9)+"%");
+            //  }
+
+             var div = $('#my-div');
+             var leftValue = 0;
+             var interval = 100;
+             var before = new Date();
+
+             var counter = setInterval(function() {
+                now = new Date();
+                var elapsedTime = (now.getTime() - before.getTime());
+                 $('.determinate').css('width', ((60-(elapsedTime/1000))*5/3)+"%");
+                if(elapsedTime >= 60000) {
+                    clearInterval(counter);
+                }
+             }, interval);
     });
+
     socket.on('opponent', function(data) {
              $("#opponentName").text(data.nick);
              oppname=data.nick;
@@ -49,6 +78,7 @@ $(document).ready(function() {
     socket.on('demandanswers', function(data){
         socket.emit('answers', {answers: $('#answerField').val(), first: firstUser});
         $('#gamePlay').hide();
+        $('#progressBar').hide();
         $('#scores').show();
     });
     socket.on('score', function(data){
@@ -68,6 +98,7 @@ $(document).ready(function() {
         {
             $('#discon').show();
             $('#gamePlay').hide();
+            $('#progressBar').hide();
             socket.close();
         }
     });
@@ -78,10 +109,12 @@ $(document).ready(function() {
             $('#result').show();
             if(otherScore>score)
             {
+                $("#whoWon").css('color', '#bf360c');
                 $("#whoWon").text("You Lose.");
             }
             if(otherScore<score)
             {
+                $("#whoWon").css('color', '#00e676');
                 $("#whoWon").text("You Win!");
             }
             if(otherScore==score)

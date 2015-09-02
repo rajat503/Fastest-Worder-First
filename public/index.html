@@ -13,19 +13,23 @@
 <script src="js/date.js"> </script>
 <script src="js/materialize.js"></script>
 <body>
-  <nav class="light-blue darken-3" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Fastest Worder First</a>
+  <nav class="light-blue darken-3" role="navigation" style="position: fixed; z-index: 1000">
+    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">Fastest Worder First</a>
       <div class="right hide-on-med-and-down">
         Developed by <a target = "_blank" href="https://www.facebook.com/rajat503"><b>Rajat Agarwal</b></a> & <a target = "_blank" href="https://www.facebook.com/akshay.damle.7"><b>Akshay Damle</b></a>
     </div>
     </div>
+    <div id = "progressBar" class="progress" style="margin-top: 0px; background-color: #ffab91 ">
+        <div class="determinate" style="width: 100%; background-color: #bf360c"></div>
+    </div>
   </nav>
+
 
   <main>
 
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br><br><br>
+      <br><br><br><br><br><br>
       <h1 class="header center" id = "welcomeTag"></h1>
       <div class="row center">
         <p class="header col s12 light" style = "font-size: 1.2rem;">The goal is to type in as many words as possible in a minute. Your words must start with the letter assigned to you and must exist in our dictionary.</p>
@@ -43,7 +47,7 @@
       </div>
     </div>
     <div class = "row not-there-at-first">
-      <br><br><br>
+      <br><br><br><br><br>
       <div id = "loadingDiv" class = "centered">
         <h4 class = "header light">Waiting for opponent...</h4>
         <br><br>
@@ -159,6 +163,7 @@
           <h5 class = "header light" id = "opponentScore"></h4>
           <br><br>
           <a href = "/" class="waves-effect waves-light btn light-blue darken-3"><i class="material-icons left">replay</i>Play Again</a>
+          <br>
       </div>
       <div id="discon" class = "centered">
           <h4 class = "header light"> Oops! Looks like your opponent has disconnected. </h4>
@@ -175,7 +180,7 @@
       <div class="row">
         <div class="col l6 s12">
           <h5 class="white-text">We are inducting!</h5>
-          <p class="grey-text text-lighten-4" style="text-align: justify">We are a team of developers and designers who love building cool shit. Right now we're looking for individuals who are enthusastic about building robust applications with elegant design. If you think you have it in you or want to learn, feel free to drop us a message.</p>
+          <p class="grey-text text-lighten-4" style="text-align: justify">We are a team of developers and designers who love building cool shit. Right now we're looking for individuals who are enthusiastic about building robust applications with elegant design. If you think you have it in you or want to learn, feel free to drop us a message.</p>
         </div>
         <div class="col l3 s12">&nbsp;
         </div>
