@@ -4,9 +4,9 @@ $(document).ready(function() {
     var message;
     if(hours >= 4 && hours < 12) {
         message = "Good Morning";
-    } else if(hours < 16) {
+    } else if(hours < 16 && hours >=12) {
         message = "Good Afternoon";
-    } else if(hours <= 23) {
+    } else if(hours <= 23 && hours>=16) {
         message = "Good Evening";
     } else {
         message = "Up so late? Cool."
