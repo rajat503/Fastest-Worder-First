@@ -2,32 +2,199 @@
 <head>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <meta charset="utf-8">
-    <title> FWF </title>
+    <title>Fastest Worder First</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <script src="/socket.io/socket.io.js"></script>
-<script src="userlogic.js"> </script>
+<script src="js/userlogic.js"> </script>
+<script src="js/date.js"> </script>
+<script src="js/materialize.js"></script>
 <body>
-    <form>
-        <div id = "formDiv">
-            <input id = "nameField" type="text" placeholder="Name">
-            <input id = "submitButton" type="submit"></input>
+  <nav class="light-blue darken-3" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Fastest Worder First</a>
+      <div class="right hide-on-med-and-down">
+        Developed by <a target = "_blank" href="https://www.facebook.com/rajat503"><b>Rajat Agarwal</b></a> & <a target = "_blank" href="https://www.facebook.com/akshay.damle.7"><b>Akshay Damle</b></a>
+    </div>
+    </div>
+  </nav>
+
+  <main>
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br><br><br>
+      <h1 class="header center" id = "welcomeTag"></h1>
+      <div class="row center">
+        <p class="header col s12 light" style = "font-size: 1.2rem;">The goal is to type in as many words as possible in a minute. Your words must start with the letter assigned to you and must exist in our dictionary.</p>
+      </div>
+
+   </div>
+  </div>
+
+  <div class = "container">
+    <div class="row">
+      <div class = "input-field width-20" id = "formDiv">
+        <input id = "nameField" type="text" class = "validate">
+        <label for="nameField">Name</label>
+        <a id="submitButton" class="btn waves-effect waves-light light-blue darken-3" style = "width: 100%;"><i class="material-icons left">play_arrow</i>Start</a>
+      </div>
+    </div>
+    <div class = "row not-there-at-first">
+      <br><br><br>
+      <div id = "loadingDiv" class = "centered">
+        <h4 class = "header light">Waiting for opponent...</h4>
+        <br><br>
+        <div class="preloader-wrapper big active">
+          <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                  <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                  <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                  <div class="circle"></div>
+              </div>
+          </div>
+          <div class="spinner-layer spinner-red">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
         </div>
-        <div id = "loadingDiv">
-            <h4>Waiting for opponent...</h4>
+      </div>
+
+      <div class="spinner-layer spinner-yellow">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
         </div>
-        <div id = "gameOn">
-            <h4>Assigning letter...</h4>
+      </div>
+
+      <div class="spinner-layer spinner-green">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
         </div>
-        <div id="gamePlay">
-            <textarea id = "answerField" rows="10" cols="50" placeholder="Enter words in new lines starting with the letter below. Game ends after 60 seconds."></textarea>
+      </div>
         </div>
-        <div id="scores">
+      </div>
+    </div>
+    <div class = "row not-there-at-first">
+        <div id = "gameOn" class = "centered">
+          <h4>Assigning letter...</h4>
+          <br><br>
+          <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+            <div class="spinner-layer spinner-red">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
-        <div id="result">
+
+        <div class="spinner-layer spinner-yellow">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
-        <div id="discon">
-            <h4> Opponent disconnected </h4>
+
+        <div class="spinner-layer spinner-green">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div><div class="gap-patch">
+            <div class="circle"></div>
+          </div><div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
         </div>
-    </form>
+          </div>
+        </div>
+    </div>
+    <div class = "row not-there-at-first">
+      <div id="gamePlay" class = "input-field centered">
+          <h5 class = "header light">Enter words starting with</h5>
+          <h3 id = "letterAssigned"></h3>
+          <textarea id = "answerField" rows="10" cols="50" placeholder="Enter words in new lines. Game ends after 60 seconds." class = "materialize-textarea"></textarea>
+          <br><br>
+          <h5 class = "header light">You are playing against</h5>
+          <h3 id = "opponentName"></h3>
+      </div>
+    </div>
+    <div class = "row not-there-at-first">
+      <div id="result" class = "centered">
+          <h4 class = "header" id = "whoWon"></h4>
+          <br>
+      </div>
+      <div id="scores" class = "centered">
+          <h5 class = "header light" id = "ownScore"></h4>
+          <h5 class = "header light" id = "opponentScore"></h4>
+          <br><br>
+          <a href = "/" class="waves-effect waves-light btn light-blue darken-3"><i class="material-icons left">replay</i>Play Again</a>
+      </div>
+      <div id="discon" class = "centered">
+          <h4 class = "header light"> Oops! Looks like your opponent has disconnected. </h4>
+          <br>
+          <a href = "/" class="waves-effect waves-light btn light-blue darken-3"><i class="material-icons left">replay</i>Play Again</a>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+  <footer class="page-footer light-blue darken-3" style="">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">We are inducting!</h5>
+          <p class="grey-text text-lighten-4" style="text-align: justify">We are a team of developers and designers who love building cool shit. Right now we're looking for individuals who are enthusastic about building robust applications with elegant design. If you think you have it in you or want to learn, feel free to drop us a message.</p>
+        </div>
+        <div class="col l3 s12">&nbsp;
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Contact</h5>
+          <ul>
+            <li><a target = "_blank" class="white-text" href="https://www.facebook.com/rajat503">Rajat Agarwal</a></li>
+            <li><a target = "_blank" target = "_blank" class="white-text" href="https://www.facebook.com/raghavpassi">Raghav Passi</a></li>
+            <li><a target = "_blank" class="white-text" href="https://www.facebook.com/akshay.damle.7">Akshay Damle</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made at DCM Club, BITS Pilani K K Birla Goa Campus
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

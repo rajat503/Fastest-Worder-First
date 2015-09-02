@@ -11,16 +11,20 @@ $(document).ready(function() {
     var otherScore=0;
     var scoreset=0;
     var otherScoreset=0;
-
-    console.log("Ready.");
+    var oppname;
 
     var socket = io.connect('http://10.3.14.107:8081');
 
     $('#submitButton').on('click', function(e) {
         e.preventDefault();
-        $('#formDiv').hide();
-        socket.emit('nick', $('#nameField').val());
-        $('#formDiv').remove();
+        if($('#nameField').val()!="")
+        {
+            $('#formDiv').hide();
+            socket.emit('nick', $('#nameField').val());
+            $('#formDiv').remove();
+            $('#index-banner').remove();
+            $('.not-there-at-first').css('opacity', '1.0');
+        }
     });
 
     socket.on('callback', function(data) {
@@ -35,10 +39,11 @@ $(document).ready(function() {
     socket.on('letter', function(data) {
              $('#gameOn').hide();
              $('#gamePlay').show();
-             $("#gamePlay").append("<h4>"+data.alpha+"</h4>");
+             $("#letterAssigned").text(data.alpha);
     });
     socket.on('opponent', function(data) {
-             $("#gamePlay").append("<h4> Opponent: "+data.nick+"</h4>");
+             $("#opponentName").text(data.nick);
+             oppname=data.nick;
     });
 
     socket.on('demandanswers', function(data){
@@ -49,19 +54,22 @@ $(document).ready(function() {
     socket.on('score', function(data){
         score=data.score;
         scoreset=1;
-        $("#scores").append("<h4 id='ownScore'>"+score+"</h4>");
+        $("#ownScore").text("You scored: "+score);
         checkVictory();
     });
     socket.on('otherScore', function(data){
         otherScore=data.score;
         otherScoreset=1;
-        $("#scores").append("<h4 id='oppScore'>"+otherScore+"</h4>");
+        $("#opponentScore").text(oppname+" scored: "+otherScore);
         checkVictory();
     });
     socket.on('disconnecteduser', function(data){
-        $('#discon').show();
-        $('#gamePlay').hide();
-        socket.close();
+        if(otherScoreset==0 && scoreset==0)
+        {
+            $('#discon').show();
+            $('#gamePlay').hide();
+            socket.close();
+        }
     });
     function checkVictory()
     {
@@ -70,15 +78,15 @@ $(document).ready(function() {
             $('#result').show();
             if(otherScore>score)
             {
-                $("#result").append("<h4> You Lose </h4>");
+                $("#whoWon").text("You Lose.");
             }
             if(otherScore<score)
             {
-                $("#result").append("<h4> You Win </h4>");
+                $("#whoWon").text("You Win!");
             }
             if(otherScore==score)
             {
-                $("#result").append("<h4> Game Tied </h4>");
+                $("#whoWon").text("Game Tied!");
             }
         }
     }

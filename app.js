@@ -44,7 +44,7 @@ io.on('connection', function(socket){
             {
                 sockets[current - 2].emit('demandanswers', {timeover: "yes"});
                 sockets[current - 1].emit('demandanswers', {timeover: "yes"});
-            }, 60000);
+            }, 61000);
         }
    });
 
